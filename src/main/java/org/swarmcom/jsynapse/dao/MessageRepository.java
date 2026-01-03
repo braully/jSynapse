@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
-*/
+ */
 package org.swarmcom.jsynapse.dao;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+//;
 import org.swarmcom.jsynapse.domain.Message;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface MessageRepository extends MongoRepository<Message, String> {
+public interface MessageRepository extends JpaRepository<Message, String> {
 
     List<Message> findByRoomId(String roomId);
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
-*/
+ */
 package org.swarmcom.jsynapse;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,15 +21,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.data.mongodb.config.EnableMongoAuditing;
+//import org.springframework.data.mongodb.config.EnableMongoAuditing;
 
 import static org.springframework.boot.SpringApplication.run;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @Configuration
 @PropertySource(value = "classpath:jsynapse.properties", ignoreResourceNotFound = true)
-@EnableMongoAuditing
+//@EnableMongoAuditing
+@EnableJpaRepositories
 public class JSynapseServer {
+
     @Bean(name = "customProps")
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();

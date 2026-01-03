@@ -13,28 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
-*/
+ */
 package org.swarmcom.jsynapse.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
+//import org.springframework.data.annotation.Id;
+//import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.List;
+//import org.springframework.stereotype.Indexed;
 
 @Getter
 @Setter
+@Entity
 public class Room {
+
     @Id
     private String id;
 
     @JsonProperty("room_id")
     @JsonView({CreateSummary.class, DirectorySummary.class})
-    @Indexed
+//    @Indexed
     private String roomId;
 
     @NotNull
@@ -55,11 +60,15 @@ public class Room {
     @JsonProperty
     private List<String> invite;
 
-    public interface CreateSummary {}
+    public interface CreateSummary {
+    }
 
-    public interface DirectorySummary {}
+    public interface DirectorySummary {
+    }
 
-    public interface TopicSummary {}
+    public interface TopicSummary {
+    }
 
-    public interface NameSummary {}
+    public interface NameSummary {
+    }
 }

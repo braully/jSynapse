@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
-*/
+ */
 package org.swarmcom.jsynapse.dao;
 
 import com.mongodb.client.gridfs.model.GridFSFile;
@@ -30,6 +30,7 @@ import java.io.InputStream;
 
 @Repository
 public class ContentRepositoryImpl implements ContentRepository {
+
     @Autowired
     GridFsTemplate gridFsTemplate;
 

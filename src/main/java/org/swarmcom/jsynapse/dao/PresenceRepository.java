@@ -13,12 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
-*/
+ */
 package org.swarmcom.jsynapse.dao;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+//;
 import org.swarmcom.jsynapse.domain.Presence;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PresenceRepository extends MongoRepository<Presence, String> {
+
+public interface PresenceRepository extends JpaRepository<Presence, String> {
+
     Presence findOneByUserId(String userId);
 }

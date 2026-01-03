@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
-*/
+ */
 package org.swarmcom.jsynapse.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+//import org.springframework.data.annotation.Id;
 
+@Entity
+@Table(name = "auth_user")
 public class User {
+
     @Id
     String id;
 
@@ -77,7 +83,9 @@ public class User {
         this.displayName = displayName;
     }
 
-    public interface DisplayNameSummary {}
+    public interface DisplayNameSummary {
+    }
 
-    public interface AvatarUrlSummary {}
+    public interface AvatarUrlSummary {
+    }
 }

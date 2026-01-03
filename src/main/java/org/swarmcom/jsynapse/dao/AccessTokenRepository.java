@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
-*/
+ */
 package org.swarmcom.jsynapse.dao;
 
-
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.swarmcom.jsynapse.domain.AccessToken;
 
-public interface AccessTokenRepository extends MongoRepository<AccessToken, String> {
+public interface AccessTokenRepository extends JpaRepository<AccessToken, String> {
+
     AccessToken findByToken(String token);
 
     AccessToken findByUserId(String userId);

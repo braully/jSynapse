@@ -13,23 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
-*/
+ */
 package org.swarmcom.jsynapse.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
+//import org.springframework.data.annotation.Id;
+//import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+@Entity
+
 public class Message {
+
     @Id
     private String id;
 
@@ -41,7 +46,7 @@ public class Message {
 
     @Setter
     @Getter
-    @Indexed
+//    @Indexed
     private String roomId;
 
     @Setter
@@ -50,6 +55,7 @@ public class Message {
 
     @Getter
     public static class Messages {
+
         private final List<MessageSummary> chunk = new LinkedList<>();
 
         public Messages(List<Message> messages) {
@@ -62,6 +68,7 @@ public class Message {
 
     @Getter
     public static class MessageSummary {
+
         public static final String MSG_TYPE = "msgtype";
         public static final String BODY = "body";
 

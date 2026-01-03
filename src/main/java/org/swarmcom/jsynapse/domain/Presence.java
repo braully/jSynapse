@@ -13,20 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
-*/
+ */
 package org.swarmcom.jsynapse.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.annotation.Id;
+//import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.index.Indexed;
+//import org.springframework.data.mongodb.core.index.Indexed;
 import org.swarmcom.jsynapse.validator.EnumValue;
 
 import java.util.Date;
 
+@Entity
+
 public class Presence {
+
     @Id
     String id;
 
@@ -40,7 +45,7 @@ public class Presence {
     @JsonView(PresenceSummary.class)
     String statusMessage;
 
-    @Indexed
+//    @Indexed
     String userId;
 
     @LastModifiedDate
@@ -88,5 +93,6 @@ public class Presence {
         free_for_chat;
     }
 
-    public interface PresenceSummary {}
+    public interface PresenceSummary {
+    }
 }
