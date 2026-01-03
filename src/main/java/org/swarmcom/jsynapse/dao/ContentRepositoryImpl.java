@@ -16,45 +16,39 @@
  */
 package org.swarmcom.jsynapse.dao;
 
-import com.mongodb.client.gridfs.model.GridFSFile;
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.gridfs.GridFsResource;
-import org.springframework.data.mongodb.gridfs.GridFsTemplate;
-import org.springframework.stereotype.Repository;
-import org.swarmcom.jsynapse.service.content.ContentResource;
-
 import java.io.InputStream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.stereotype.Repository;
+import org.swarmcom.jsynapse.domain.Content;
+import org.swarmcom.jsynapse.service.content.ContentResource;
 
 @Repository
 public class ContentRepositoryImpl implements ContentRepository {
 
     @Autowired
-    GridFsTemplate gridFsTemplate;
+    private ContentJpaRepository contentJpaRepository;
 
     @Override
-    public String upload(InputStream content, String fileName, String contentType) {
-        var fileId = gridFsTemplate.store(content, fileName, contentType);
-        return fileId.toString();
+    public String upload(InputStream inputStream, String fileName, String contentType) {
+        try {
+            byte[] data = inputStream.readAllBytes();
+            Content content = new Content(fileName, contentType, data);
+            Content savedContent = contentJpaRepository.save(content);
+            return savedContent.getId();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao fazer upload do arquivo", e);
+        }
     }
 
     @Override
     public ContentResource download(String mediaId) {
-        GridFSFile file = gridFsTemplate.findOne(Query.query(Criteria.where("_id").is(mediaId)));
-
-        if (file == null) {
-            return null;
-        }
-
-        GridFsResource gridFsResource = gridFsTemplate.getResource(file);
-
-        try {
-            return new ContentResource(gridFsResource.getContentType(), gridFsResource.contentLength(), gridFsResource);
-        } catch (Exception e) {
-            // Handle exceptions (such as I/O issues)
-            return null;
-        }
+        return contentJpaRepository.findById(mediaId)
+                .map(content -> {
+                    ByteArrayResource resource = new ByteArrayResource(content.getData());
+                    return new ContentResource(content.getContentType(), content.getSize(), resource);
+                })
+                .orElse(null);
     }
 }

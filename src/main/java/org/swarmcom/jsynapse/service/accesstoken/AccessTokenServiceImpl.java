@@ -16,42 +16,46 @@
 */
 package org.swarmcom.jsynapse.service.accesstoken;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.index.Index;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.swarmcom.jsynapse.dao.AccessTokenRepository;
 import org.swarmcom.jsynapse.domain.AccessToken;
 
-import java.util.concurrent.TimeUnit;
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 @Service
 @Validated
 public class AccessTokenServiceImpl implements AccessTokenService {
-    private AccessTokenRepository accessTokenRepository;
-    private MongoTemplate mongoTemplate;
+    private final AccessTokenRepository accessTokenRepository;
 
     @Value("${token.expire.seconds:300}")
     private long expire;
 
     @Inject
-    public AccessTokenServiceImpl(AccessTokenRepository accessTokenRepository, MongoTemplate mongoTemplate) {
+    public AccessTokenServiceImpl(AccessTokenRepository accessTokenRepository) {
         this.accessTokenRepository = accessTokenRepository;
-        this.mongoTemplate = mongoTemplate;
-
     }
 
-    @PostConstruct
-    public void init() {
-        this.mongoTemplate.indexOps(AccessToken.class).
-                ensureIndex(new Index().on("lastUsed", Sort.Direction.ASC).expire(expire, TimeUnit.SECONDS));
+    /**
+     * Limpa tokens expirados periodicamente (executa a cada 5 minutos)
+     * Substitui o índice TTL do MongoDB
+     */
+    @Scheduled(fixedDelay = 300000) // 5 minutos
+    public void cleanExpiredTokens() {
+        long expirationTime = System.currentTimeMillis() - (expire * 1000);
+        Date expirationDate = new Date(expirationTime);
+        List<AccessToken> tokens = accessTokenRepository.findAll();
+        tokens.stream()
+                .filter(token -> token.getLastUsed().before(expirationDate))
+                .forEach(accessTokenRepository::delete);
     }
 
     @Override

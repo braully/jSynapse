@@ -16,6 +16,9 @@
 */
 package org.swarmcom.jsynapse;
 
+import java.io.InputStream;
+
+import static org.apache.commons.lang3.StringUtils.deleteWhitespace;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,25 +26,23 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.utility.DockerImageName;
-
-import java.io.InputStream;
-
-import static org.apache.commons.lang3.StringUtils.deleteWhitespace;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JSynapseServer.class)
@@ -54,8 +55,8 @@ public abstract class TestBase {
 
     public MockMvc mockMvc;
 
-    @Autowired
-    MongoTemplate mongoTemplate;
+    // @Autowired
+    // MongoTemplate mongoTemplate;
 
     @BeforeAll
     public static void startContainer() {
@@ -66,12 +67,12 @@ public abstract class TestBase {
     @BeforeEach
     public void setup() {
         this.mockMvc = webAppContextSetup(this.wac).build();
-        mongoTemplate.getDb().drop();
+        // mongoTemplate.getDb().drop();
     }
 
     @AfterEach
     public void after() {
-        mongoTemplate.getDb().drop();
+        // mongoTemplate.getDb().drop();
     }
 
     public void postAndCompareResult(String path, Resource req, Resource res) throws Exception {

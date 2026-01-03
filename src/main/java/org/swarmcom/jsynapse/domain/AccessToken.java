@@ -16,18 +16,19 @@
  */
 package org.swarmcom.jsynapse.domain;
 
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-//import org.springframework.data.annotation.Id;
-
-import java.util.Date;
 
 @Setter
 @Getter
 @Entity
+@NoArgsConstructor
 public class AccessToken {
 
     @Id
