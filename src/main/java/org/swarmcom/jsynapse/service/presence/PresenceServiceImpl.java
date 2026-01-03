@@ -16,16 +16,15 @@
 */
 package org.swarmcom.jsynapse.service.presence;
 
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.swarmcom.jsynapse.dao.PresenceRepository;
 import org.swarmcom.jsynapse.domain.Presence;
 import org.swarmcom.jsynapse.domain.User;
 import org.swarmcom.jsynapse.service.user.UserService;
-
-import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 @Service
 @Validated

@@ -16,8 +16,8 @@
 */
 package org.swarmcom.jsynapse.dao;
 
-import com.mongodb.gridfs.GridFSDBFile;
-import com.mongodb.gridfs.GridFSFile;
+import com.mongodb.client.gridfs.model.GridFSFile;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -35,17 +35,25 @@ public class ContentRepositoryImpl implements ContentRepository {
 
     @Override
     public String upload(InputStream content, String fileName, String contentType) {
-        GridFSFile file = gridFsTemplate.store(content, fileName, contentType);
-        return file.getId().toString();
+        var fileId = gridFsTemplate.store(content, fileName, contentType);
+        return fileId.toString();
     }
 
     @Override
     public ContentResource download(String mediaId) {
-        GridFSDBFile file = gridFsTemplate.findOne(Query.query(Criteria.where("_id").is(mediaId)));
-        if (null == file) {
+        GridFSFile file = gridFsTemplate.findOne(Query.query(Criteria.where("_id").is(mediaId)));
+
+        if (file == null) {
             return null;
         }
-        GridFsResource gridFsResource = new GridFsResource(file);
-        return new ContentResource(gridFsResource.getContentType(), file.getLength(), gridFsResource);
+
+        GridFsResource gridFsResource = gridFsTemplate.getResource(file);
+
+        try {
+            return new ContentResource(gridFsResource.getContentType(), gridFsResource.contentLength(), gridFsResource);
+        } catch (Exception e) {
+            // Handle exceptions (such as I/O issues)
+            return null;
+        }
     }
 }

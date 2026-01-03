@@ -17,22 +17,18 @@
 package org.swarmcom.jsynapse.controller.client.api.v1;
 
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.swarmcom.jsynapse.TestBase;
-import org.swarmcom.jsynapse.service.authentication.password.PasswordProvider;
 import org.swarmcom.jsynapse.service.user.UserUtils;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class UserRestApiTest extends TestBase {
-    @Autowired
-    private PasswordProvider provider;
+class UserRestApiTest extends TestBase {
 
     @Value("classpath:user/PutDisplayName.json")
     private Resource putDisplayName;
@@ -46,18 +42,20 @@ public class UserRestApiTest extends TestBase {
     @Value("classpath:auth/PostLoginResponse.json")
     private Resource postLoginResponse;
 
-    @Before
+    @MockBean
+    UserUtils utils;
+
+    @Override
+    @BeforeEach
     public void setup() {
         super.setup();
-        UserUtils utils = mock(UserUtils.class);
         when(utils.generateUserId("user_id")).thenReturn("@user:swarmcom.org");
         when(utils.generateAccessToken()).thenReturn("abcdef0123456789");
-        provider.userUtils = utils;
     }
 
     @Test
-    public void testUserProfile() throws Exception {
-        //try to set display name for non existing user
+    void testUserProfile() throws Exception {
+        //try to set display name for non-existing user
         putAndCheckStatus("/_matrix/client/api/v1/profile/@user:swarmcom.org/displayname?access_token=abcdef0123456789", putDisplayName, HttpStatus.FORBIDDEN);
         //try to set avatar for non existing user
         putAndCheckStatus("/_matrix/client/api/v1/profile/@user:swarmcom.org/avatar_url?access_token=abcdef0123456789", putAvatarUrl, HttpStatus.FORBIDDEN);

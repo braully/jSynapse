@@ -16,13 +16,13 @@
 */
 package org.swarmcom.jsynapse.service.authentication;
 
+import jakarta.inject.Inject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.swarmcom.jsynapse.domain.Authentication.*;
 import org.swarmcom.jsynapse.service.exception.InvalidRequestException;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

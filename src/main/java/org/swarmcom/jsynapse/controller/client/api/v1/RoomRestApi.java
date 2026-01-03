@@ -17,6 +17,8 @@
 package org.swarmcom.jsynapse.controller.client.api.v1;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +28,8 @@ import org.swarmcom.jsynapse.domain.RoomAlias;
 import org.swarmcom.jsynapse.service.room.RoomAliasService;
 import org.swarmcom.jsynapse.service.room.RoomService;
 
-import javax.inject.Inject;
-import javax.validation.Valid;
-
-
-import static org.springframework.web.bind.annotation.RequestMethod.*;
 import static java.lang.String.format;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 import static org.swarmcom.jsynapse.controller.JsynapseApi.CLIENT_V1_API;
 
 @RestController

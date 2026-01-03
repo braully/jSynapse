@@ -17,6 +17,7 @@
 package org.swarmcom.jsynapse.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -31,30 +32,21 @@ public class RoomAlias {
     @Id
     String id;
 
+    @Getter
     @Indexed
     @JsonProperty("room_id")
     String roomId;
 
+    @Getter
     String alias;
 
+    @Getter
     String server;
 
     public RoomAlias(String roomId, String alias, String server) {
         this.roomId = roomId;
         this.alias = alias;
         this.server = server;
-    }
-
-    public String getRoomId() {
-        return roomId;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public String getServer() {
-        return server;
     }
 
     public static class RoomAliases {

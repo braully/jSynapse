@@ -26,7 +26,7 @@ You can run a farm of jSynapse servers, pointing all to the same MongoDB instanc
 By deafult jSynapse homeserver accepts requests on port 5555. You can change this by passing --port.server={PORT}
 To start with a different domain (default swarmcom.org) use --domain=mydomain.org
 
-To check server health point browser to http://localhost:5555/health
+To check server health point browser to http://localhost:5555/actuator/health
 
 Examples to get/set user display name and avatar url
 
@@ -42,4 +42,10 @@ curl -X PUT -H "Content-Type: application/json" -d '{"avatar_url":"url"}'  http:
 curl http://localhost:5555/_matrix/client/api/v1/profile/@mirceac:swarmcom.org/avatar_url?access_token=VEJbwzztYLhcIkKM
 {"avatar_url":"url"}
 
+
+## Check
+
+```shell
+ mvn versions:display-plugin-updates
+```
 

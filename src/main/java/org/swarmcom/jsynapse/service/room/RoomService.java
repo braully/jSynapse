@@ -16,10 +16,12 @@
 */
 package org.swarmcom.jsynapse.service.room;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.swarmcom.jsynapse.domain.Room;
 
 public interface RoomService {
-    Room createRoom(Room room);
+    Room createRoom(@NotNull @Valid  Room room);
 
     Room findRoomByAlias(String alias);
 

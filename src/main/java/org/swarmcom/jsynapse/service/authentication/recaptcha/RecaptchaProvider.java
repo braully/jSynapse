@@ -16,6 +16,7 @@
 */
 package org.swarmcom.jsynapse.service.authentication.recaptcha;
 
+import jakarta.inject.Inject;
 import net.tanesha.recaptcha.ReCaptchaImpl;
 import net.tanesha.recaptcha.ReCaptchaResponse;
 import org.slf4j.Logger;
@@ -28,21 +29,19 @@ import org.swarmcom.jsynapse.domain.Authentication.AuthenticationResult;
 import org.swarmcom.jsynapse.domain.Authentication.AuthenticationSubmission;
 import org.swarmcom.jsynapse.domain.User;
 import org.swarmcom.jsynapse.service.accesstoken.AccessTokenService;
-import org.swarmcom.jsynapse.service.exception.InvalidRequestException;
 import org.swarmcom.jsynapse.service.authentication.AuthenticationProvider;
+import org.swarmcom.jsynapse.service.exception.InvalidRequestException;
 import org.swarmcom.jsynapse.service.user.UserService;
 import org.swarmcom.jsynapse.service.user.UserUtils;
 
-import javax.inject.Inject;
-
 import java.util.Date;
 
-import static org.swarmcom.jsynapse.service.authentication.recaptcha.RecaptchaInfo.*;
 import static java.lang.String.format;
+import static org.swarmcom.jsynapse.service.authentication.recaptcha.RecaptchaInfo.*;
 
 @Component(RECAPTCHA_TYPE)
 public class RecaptchaProvider implements AuthenticationProvider {
-    final static AuthenticationInfo flow = new RecaptchaInfo();
+    static final AuthenticationInfo flow = new RecaptchaInfo();
     private static final Logger LOGGER = LoggerFactory.getLogger(RecaptchaProvider.class);
 
     private final UserService userService;

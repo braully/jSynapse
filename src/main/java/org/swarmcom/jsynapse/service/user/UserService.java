@@ -16,16 +16,18 @@
 */
 package org.swarmcom.jsynapse.service.user;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.swarmcom.jsynapse.domain.User;
 
 public interface UserService {
-    public User createUser(User user);
+    User createUser(@NotNull @Valid User user);
 
-    public User findUserById(String userId);
+    User findUserById(String userId);
 
-    public void saveDisplayName(String userId, String displayName, String accessToken);
+    void saveDisplayName(String userId, String displayName, String accessToken);
 
-    public void saveAvatarUrl(String userId, String avatarUrl, String accessToken);
+    void saveAvatarUrl(String userId, String avatarUrl, String accessToken);
 
-    public User findLoggedUserById(String userId, String accessToken);
+    User findLoggedUserById(String userId, String accessToken);
 }

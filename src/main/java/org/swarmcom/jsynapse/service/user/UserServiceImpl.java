@@ -16,6 +16,9 @@
 */
 package org.swarmcom.jsynapse.service.user;
 
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.swarmcom.jsynapse.dao.UserRepository;
@@ -27,9 +30,7 @@ import org.swarmcom.jsynapse.service.exception.EntityNotFoundException;
 import org.swarmcom.jsynapse.service.exception.InvalidRequestException;
 import org.swarmcom.jsynapse.service.exception.TokenNotFoundException;
 
-import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+
 
 import java.util.Date;
 
@@ -51,8 +52,7 @@ public class UserServiceImpl implements UserService {
         if (existingUser != null) {
             throw new EntityAlreadyExistsException("User already created");
         }
-        User createdUser = repository.save(user);
-        return createdUser;
+        return repository.save(user);
     }
 
     @Override

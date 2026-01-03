@@ -16,7 +16,10 @@
 */
 package org.swarmcom.jsynapse.service.room;
 
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
@@ -24,26 +27,20 @@ import org.swarmcom.jsynapse.dao.RoomAliasRepository;
 import org.swarmcom.jsynapse.domain.RoomAlias;
 import org.swarmcom.jsynapse.service.exception.EntityAlreadyExistsException;
 
-import javax.inject.Inject;
-
 import java.util.List;
-import java.util.regex.Pattern;
 
-import static org.swarmcom.jsynapse.JSynapseServer.DOMAIN;
-
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 @Service
 @Validated
 public class RoomAliasServiceImpl implements RoomAliasService {
-    private RoomAliasRepository roomAliasRepository;
+    @Value("${jsynapse.domain}")
+    private String domain;
 
-    @Inject
-    public RoomAliasServiceImpl(final RoomAliasRepository rAliasRepository) {
-        this.roomAliasRepository = rAliasRepository;
-    }
+    private final RoomAliasRepository roomAliasRepository;
 
     public RoomAlias createAlias(String roomId, String alias) {
-        RoomAlias roomAlias = new RoomAlias(roomId, alias, DOMAIN);
-        RoomAlias existingRoomAlias = roomAliasRepository.findByAliasAndServer(alias, DOMAIN);
+        RoomAlias roomAlias = new RoomAlias(roomId, alias, domain);
+        RoomAlias existingRoomAlias = roomAliasRepository.findByAliasAndServer(alias, domain);
         if (existingRoomAlias == null) {
             return roomAliasRepository.save(roomAlias);
         } else {
@@ -52,7 +49,7 @@ public class RoomAliasServiceImpl implements RoomAliasService {
     }
 
     public void deleteAlias(String alias) {
-        RoomAlias roomAlias = roomAliasRepository.findByAliasAndServer(alias, DOMAIN);
+        RoomAlias roomAlias = roomAliasRepository.findByAliasAndServer(alias, domain);
         roomAliasRepository.delete(roomAlias);
     }
 
@@ -60,7 +57,7 @@ public class RoomAliasServiceImpl implements RoomAliasService {
         List<RoomAlias> roomAliases = roomAliasRepository.findByAlias(alias);
         String roomId = StringUtils.EMPTY;
         if(!CollectionUtils.isEmpty(roomAliases)) {
-            roomId = roomAliases.get(0).getRoomId();
+            roomId = roomAliases.getFirst().getRoomId();
         }
 
         return new RoomAlias.AliasServers(roomId, roomAliases);

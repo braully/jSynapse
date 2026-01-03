@@ -16,17 +16,15 @@
 */
 package org.swarmcom.jsynapse.controller.client.api.v1;
 
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import org.swarmcom.jsynapse.controller.JsynapseApi;
+import org.swarmcom.jsynapse.domain.Authentication.AuthenticationFlows;
 import org.swarmcom.jsynapse.domain.Authentication.AuthenticationResult;
 import org.swarmcom.jsynapse.domain.Authentication.AuthenticationSubmission;
-import org.swarmcom.jsynapse.domain.Authentication.AuthenticationFlows;
 import org.swarmcom.jsynapse.service.authentication.AuthenticationService;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-
-import static org.springframework.web.bind.annotation.RequestMethod.*;
 import static org.swarmcom.jsynapse.controller.JsynapseApi.CLIENT_V1_API;
 
 @RestController
@@ -40,28 +38,24 @@ public class AuthenticationRestApi extends JsynapseApi {
         this.authenticationService = authenticationService;
     }
 
-    @RequestMapping(value = "/login", method = GET)
-    public @ResponseBody
-    AuthenticationFlows getLoginSchemas() {
+    @GetMapping("/login")
+    public AuthenticationFlows getLoginSchemas() {
         return authenticationService.getSupportedFlows();
     }
 
-    @RequestMapping(value = "/login", method = POST)
-    public @ResponseBody
-    AuthenticationResult login(@RequestBody final AuthenticationSubmission login, HttpServletRequest request) {
+    @PostMapping("/login")
+    public AuthenticationResult login(@RequestBody final AuthenticationSubmission login, HttpServletRequest request) {
         login.setRemoteAddr(request.getRemoteAddr());
         return authenticationService.login(login);
     }
 
-    @RequestMapping(value = "/register", method = GET)
-    public @ResponseBody
-    AuthenticationFlows getRegistrationSchemas() {
+    @GetMapping("/register")
+    public AuthenticationFlows getRegistrationSchemas() {
         return authenticationService.getSupportedFlows();
     }
 
-    @RequestMapping(value = "/register", method = POST)
-    public @ResponseBody
-    AuthenticationResult register(@RequestBody final AuthenticationSubmission registration, HttpServletRequest request) {
+    @PostMapping("/register")
+    public AuthenticationResult register(@RequestBody final AuthenticationSubmission registration, HttpServletRequest request) {
         registration.setRemoteAddr(request.getRemoteAddr());
         return authenticationService.register(registration);
     }

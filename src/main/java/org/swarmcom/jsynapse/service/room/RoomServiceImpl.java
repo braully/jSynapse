@@ -16,36 +16,28 @@
 */
 package org.swarmcom.jsynapse.service.room;
 
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.swarmcom.jsynapse.dao.RoomRepository;
 import org.swarmcom.jsynapse.domain.Room;
 import org.swarmcom.jsynapse.domain.RoomAlias;
-import org.swarmcom.jsynapse.service.exception.EntityAlreadyExistsException;
 import org.swarmcom.jsynapse.service.exception.EntityNotFoundException;
 import org.swarmcom.jsynapse.service.exception.InvalidRequestException;
 
-import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
 import static java.lang.String.format;
-import static org.swarmcom.jsynapse.JSynapseServer.DOMAIN;
 
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 @Service
 @Validated
 public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final RoomAliasService roomAliasService;
-    public RoomUtils utils;
-
-    @Inject
-    public RoomServiceImpl(final RoomRepository repository, final RoomAliasService rAliasService, final RoomUtils utils) {
-        roomRepository = repository;
-        roomAliasService = rAliasService;
-        this.utils = utils;
-    }
+    private final RoomUtils utils;
 
     @Override
     public Room createRoom(@NotNull @Valid final Room room) {
@@ -55,11 +47,7 @@ public class RoomServiceImpl implements RoomService {
         if (!StringUtils.isEmpty(initialAlias)) {
             roomAliasService.createAlias(roomId, room.getAlias());
         }
-        Room createdRoom = roomRepository.save(room);
-        if (null == createdRoom) {
-            throw new EntityAlreadyExistsException(format("Failed to create room %s", room.toString()));
-        }
-        return createdRoom;
+        return roomRepository.save(room);
     }
 
     @Override
@@ -94,7 +82,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Room saveTopic(String roomId, String topic) {
         if (null == topic) {
-            throw new InvalidRequestException(format("Topic to set is null"));
+            throw new InvalidRequestException("Topic to set is null");
         }
         Room room = findRoomById(roomId);
         room.setTopic(topic);
@@ -104,7 +92,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Room saveName(String roomId, String name) {
         if (null == name) {
-            throw new InvalidRequestException(format("Name to set is null"));
+            throw new InvalidRequestException("Name to set is null");
         }
         Room room = findRoomById(roomId);
         room.setName(name);

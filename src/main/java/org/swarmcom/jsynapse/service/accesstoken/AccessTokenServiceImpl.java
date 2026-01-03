@@ -16,9 +16,13 @@
 */
 package org.swarmcom.jsynapse.service.accesstoken;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Sort;;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.stereotype.Service;
@@ -26,10 +30,6 @@ import org.springframework.validation.annotation.Validated;
 import org.swarmcom.jsynapse.dao.AccessTokenRepository;
 import org.swarmcom.jsynapse.domain.AccessToken;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.concurrent.TimeUnit;
 
 @Service

@@ -16,22 +16,18 @@
 */
 package org.swarmcom.jsynapse.controller.client.api.v1;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.swarmcom.jsynapse.TestBase;
-import org.swarmcom.jsynapse.service.authentication.password.PasswordProvider;
 import org.swarmcom.jsynapse.service.user.UserUtils;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AuthenticationRestApiTest extends TestBase {
-    @Autowired
-    private PasswordProvider provider;
+class AuthenticationRestApiTest extends TestBase {
 
     @Value("classpath:auth/GetAuthSchemas.json")
     private Resource getLoginSchemas;
@@ -43,40 +39,42 @@ public class AuthenticationRestApiTest extends TestBase {
     private Resource postLoginResponse;
 
     @Value("classpath:auth/PostMissingKeys.json")
-    private Resource postMisingKeys;
+    private Resource postMissingKeys;
 
     @Value("classpath:auth/PostUnknownSchema.json")
     private Resource postUnknownSchema;
 
-    @Before
+    @MockBean
+    UserUtils utils;
+
+    @Override
+    @BeforeEach
     public void setup() {
         super.setup();
-        UserUtils utils = mock(UserUtils.class);
         when(utils.generateUserId("user_id")).thenReturn("@user:swarmcom.org");
         when(utils.generateAccessToken()).thenReturn("abcdef0123456789");
-        provider.userUtils = utils;
     }
 
     @Test
-    public void testGetSchemas() throws Exception {
+    void testGetSchemas() throws Exception {
         getAndCompareResult("/_matrix/client/api/v1/login", getLoginSchemas);
         getAndCompareResult("/_matrix/client/api/v1/register", getLoginSchemas);
     }
 
     @Test
-    public void testUnknownSchema() throws Exception {
+    void testUnknownSchema() throws Exception {
         postAndCheckStatus("/_matrix/client/api/v1/login", postUnknownSchema, HttpStatus.BAD_REQUEST);
         postAndCheckStatus("/_matrix/client/api/v1/register", postUnknownSchema, HttpStatus.BAD_REQUEST);
     }
 
     @Test
-    public void testMissingKeys() throws Exception {
-        postAndCheckStatus("/_matrix/client/api/v1/register", postMisingKeys, HttpStatus.BAD_REQUEST);
-        postAndCheckStatus("/_matrix/client/api/v1/login", postMisingKeys, HttpStatus.BAD_REQUEST);
+    void testMissingKeys() throws Exception {
+        postAndCheckStatus("/_matrix/client/api/v1/register", postMissingKeys, HttpStatus.BAD_REQUEST);
+        postAndCheckStatus("/_matrix/client/api/v1/login", postMissingKeys, HttpStatus.BAD_REQUEST);
     }
 
     @Test
-    public void testRegisterAndLoginPassword() throws Exception {
+    void testRegisterAndLoginPassword() throws Exception {
         // login with user not registered
         postAndCheckStatus("/_matrix/client/api/v1/login", postLoginRequest, HttpStatus.NOT_FOUND);
 

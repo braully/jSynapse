@@ -18,12 +18,12 @@ package org.swarmcom.jsynapse.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.swarmcom.jsynapse.validator.EnumValue;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class Presence {

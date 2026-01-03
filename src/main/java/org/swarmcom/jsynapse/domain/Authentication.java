@@ -18,46 +18,45 @@ package org.swarmcom.jsynapse.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Authentication {
 
+    @Getter
+    @Setter
     public static class AuthenticationInfo {
         @JsonProperty
-        String type;
+        private String type;
 
         @JsonProperty
         @JsonInclude(JsonInclude.Include.NON_NULL)
-        List<String> stages;
-
-        public void setStages(List<String> stages) {
-            this.stages = stages;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
+        private List<String> stages;
 
         public boolean validateKeys(AuthenticationSubmission authentication) {
             return true;
         }
     }
 
+    @Getter
+    @Setter
     public static class AuthenticationFlows {
 
         @JsonProperty
-        List<AuthenticationInfo> flows = new LinkedList<>();
+        private List<AuthenticationInfo> flows;
 
         public AuthenticationFlows(List<AuthenticationInfo> flows) {
             this.flows = flows;
         }
     }
 
+    @Getter
     public static class AuthenticationResult {
 
+        @Setter
         @JsonProperty("user_id")
         String user;
 
@@ -69,25 +68,11 @@ public class Authentication {
             this.accessToken = accessToken;
         }
 
-        public String getUser() {
-            return user;
-        }
-
-        public void setUser(String user) {
-            this.user = user;
-        }
-
-        public String getAccessToken() {
-            return accessToken;
-        }
     }
 
     public static class AuthenticationSubmission extends HashMap<String, String> {
         static final String TYPE = "type";
         static final String REMOTE_ADDR = "remoteAddr";
-
-        public AuthenticationSubmission() {
-        }
 
         public String getType() {
             return get(TYPE);

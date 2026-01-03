@@ -16,21 +16,18 @@
 */
 package org.swarmcom.jsynapse.controller.client.api.v1;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.swarmcom.jsynapse.TestBase;
-import org.swarmcom.jsynapse.service.room.RoomService;
-import org.swarmcom.jsynapse.service.room.RoomServiceImpl;
 import org.swarmcom.jsynapse.service.room.RoomUtils;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class DirectoryRestApiTest extends TestBase {
+class DirectoryRestApiTest extends TestBase {
 
     @Value("classpath:room/CreateRoom.json")
     private Resource createRoomJSON;
@@ -44,19 +41,18 @@ public class DirectoryRestApiTest extends TestBase {
     @Value("classpath:directory/PutDeleteAlias.json")
     private Resource putDeleteAliasJSON;
 
-    @Autowired
-    RoomService roomService;
+    @MockBean
+    RoomUtils utils;
 
-    @Before
+    @Override
+    @BeforeEach
     public void setup() {
         super.setup();
-        RoomUtils utils = mock(RoomUtils.class);
         when(utils.generateRoomId()).thenReturn("!IhCdHhojjFFBLrJKSn:swarmcom.org");
-        ((RoomServiceImpl) roomService).utils = utils;
     }
 
     @Test
-    public void testRoomAlias() throws Exception {
+    void testRoomAlias() throws Exception {
         postAndCompareResult("/_matrix/client/api/v1/createRoom", createRoomJSON, createRoomResponseJSON);
         getAndCompareResult("/_matrix/client/api/v1/directory/room/alias", getAliasJSON);
         putAndCheckStatus("/_matrix/client/api/v1/directory/room/new_alias", putDeleteAliasJSON, HttpStatus.OK);

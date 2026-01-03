@@ -17,20 +17,24 @@
 package org.swarmcom.jsynapse.domain;
 
 
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@Setter
+@Getter
 public class AccessToken {
     @Id
-    String id;
+    private String id;
 
-    String userId;
+    private String userId;
 
-    String token;
+    private String token;
 
-    Date lastUsed;
+    private Date lastUsed;
 
     public AccessToken(@NotNull String userId, @NotNull String token, @NotNull Date lastUsed) {
         this.userId = userId;
@@ -38,35 +42,4 @@ public class AccessToken {
         this.lastUsed = lastUsed;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public Date getLastUsed() {
-        return lastUsed;
-    }
-
-    public void setLastUsed(Date lastUsed) {
-        this.lastUsed = lastUsed;
-    }
 }

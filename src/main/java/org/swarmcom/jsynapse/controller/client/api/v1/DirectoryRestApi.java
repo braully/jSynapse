@@ -15,49 +15,43 @@ package org.swarmcom.jsynapse.controller.client.api.v1;
  * limitations under the License.
  *
 */
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.swarmcom.jsynapse.controller.JsynapseApi;
 import org.swarmcom.jsynapse.domain.Room;
 import org.swarmcom.jsynapse.domain.RoomAlias;
 import org.swarmcom.jsynapse.service.room.RoomAliasService;
 import org.swarmcom.jsynapse.service.room.RoomService;
-import javax.inject.Inject;
 
-import static org.swarmcom.jsynapse.domain.RoomAlias.AliasServers;
-import static org.springframework.web.bind.annotation.RequestMethod.*;
-import static java.lang.String.format;
 import static org.swarmcom.jsynapse.controller.JsynapseApi.CLIENT_V1_API;
+import static org.swarmcom.jsynapse.domain.RoomAlias.AliasServers;
 
+@Slf4j
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 @RestController
 @RequestMapping(value = CLIENT_V1_API + "/directory/room/{roomAlias}")
 public class DirectoryRestApi extends JsynapseApi {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryRestApi.class);
     private final RoomService roomService;
     private final RoomAliasService roomAliasService;
 
-    @Inject
-    public DirectoryRestApi(final RoomService roomService, final RoomAliasService roomAliasService) {
-        this.roomService = roomService;
-        this.roomAliasService = roomAliasService;
-    }
-
-    @RequestMapping(method = GET)
-    public @ResponseBody AliasServers getRoomByAlias(@PathVariable String roomAlias) {
-        LOGGER.debug(format("Get room with alias %s", roomAlias));
+    @GetMapping
+    public AliasServers getRoomByAlias(@PathVariable String roomAlias) {
+        log.debug("Get room with alias {}", roomAlias);
         return roomAliasService.findByAlias(roomAlias);
     }
 
-    @RequestMapping(method = PUT)
-    public @ResponseBody RoomAlias saveRoomAlias(@PathVariable String roomAlias, @RequestBody final Room room) {
-        LOGGER.debug(format("PUT alias %s for room id %s", roomAlias, room.getRoomId()));
+    @PutMapping
+    public RoomAlias saveRoomAlias(@PathVariable String roomAlias, @RequestBody final Room room) {
+        log.debug("PUT alias {} for room id {}", roomAlias, room.getRoomId());
         return roomAliasService.createAlias(room.getRoomId(), roomAlias);
     }
 
-    @RequestMapping(method = DELETE)
+    @DeleteMapping
     public void deleteRoomAlias(@PathVariable String roomAlias, @RequestBody final Room room) {
-        LOGGER.debug(format("DELETE alias %s for room id %s", roomAlias, room.getRoomId()));
+        log.debug("DELETE alias {} for room id {}", roomAlias, room.getRoomId());
         roomService.deleteAlias(room.getRoomId(), roomAlias);
     }
 }

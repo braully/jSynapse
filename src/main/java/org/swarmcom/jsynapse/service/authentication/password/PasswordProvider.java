@@ -16,6 +16,7 @@
 */
 package org.swarmcom.jsynapse.service.authentication.password;
 
+import jakarta.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.swarmcom.jsynapse.domain.AccessToken;
@@ -24,12 +25,10 @@ import org.swarmcom.jsynapse.domain.Authentication.AuthenticationResult;
 import org.swarmcom.jsynapse.domain.Authentication.AuthenticationSubmission;
 import org.swarmcom.jsynapse.domain.User;
 import org.swarmcom.jsynapse.service.accesstoken.AccessTokenService;
-import org.swarmcom.jsynapse.service.exception.LoginFailureException;
 import org.swarmcom.jsynapse.service.authentication.AuthenticationProvider;
+import org.swarmcom.jsynapse.service.exception.LoginFailureException;
 import org.swarmcom.jsynapse.service.user.UserService;
 import org.swarmcom.jsynapse.service.user.UserUtils;
-
-import javax.inject.Inject;
 
 import java.util.Date;
 
@@ -37,7 +36,7 @@ import static org.swarmcom.jsynapse.service.authentication.password.PasswordInfo
 
 @Component(PASSWORD_TYPE)
 public class PasswordProvider implements AuthenticationProvider {
-    final static AuthenticationInfo flow = new PasswordInfo();
+    static final AuthenticationInfo flow = new PasswordInfo();
     private final UserService userService;
     private final AccessTokenService accessTokenService;
     public UserUtils userUtils;

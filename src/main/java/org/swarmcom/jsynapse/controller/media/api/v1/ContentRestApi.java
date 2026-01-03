@@ -1,5 +1,7 @@
 package org.swarmcom.jsynapse.controller.media.api.v1;
 
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,16 +12,13 @@ import org.swarmcom.jsynapse.domain.ContentUpload;
 import org.swarmcom.jsynapse.service.content.ContentResource;
 import org.swarmcom.jsynapse.service.content.ContentService;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.swarmcom.jsynapse.controller.JsynapseApi.CONTENT_V1_API;
+import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE;
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.swarmcom.jsynapse.controller.JsynapseApi.CONTENT_V1_API;
 
 @RestController
 @RequestMapping(value = CONTENT_V1_API)

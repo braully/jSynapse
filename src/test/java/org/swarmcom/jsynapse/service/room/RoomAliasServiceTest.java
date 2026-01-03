@@ -16,19 +16,21 @@
 */
 package org.swarmcom.jsynapse.service.room;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.swarmcom.jsynapse.TestBase;
 import org.swarmcom.jsynapse.domain.Room;
 import org.swarmcom.jsynapse.domain.RoomAlias;
 
-import static org.mockito.Mockito.mock;
+import java.util.List;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-import static org.junit.Assert.assertEquals;
-
-public class RoomAliasServiceTest extends TestBase {
+class RoomAliasServiceTest extends TestBase {
 
     @Autowired
     RoomServiceImpl roomService;
@@ -40,19 +42,22 @@ public class RoomAliasServiceTest extends TestBase {
     @Autowired
     RoomAliasService roomAliasService;
 
-    @Before
+    @MockBean
+    RoomUtils utils;
+
+    @Override
+    @BeforeEach
     public void setup() {
         super.setup();
-        RoomUtils utils = mock(RoomUtils.class);
+
         when(utils.generateRoomId()).thenReturn("abcdef0123456789:swarmcom.org");
-        roomService.utils = utils;
         Room room = new Room();
         room.setName("Test_room_with_alias");
         room.setAlias("Room_alias");
         room.setTopic("Room_topic_with_alias");
         createdRoomWithAlias = roomService.createRoom(room);
+
         when(utils.generateRoomId()).thenReturn("0123456789abcdef:swarmcom.org");
-        roomService.utils = utils;
         room = new Room();
         room.setName("Test_room_without_alias");
         room.setTopic("Room_topic_without");
@@ -60,17 +65,17 @@ public class RoomAliasServiceTest extends TestBase {
     }
 
     @Test
-    public void createFindAlias() {
+    void createFindAlias() {
         RoomAlias alias = roomAliasService.createAlias("abcdef0123456789:swarmcom.org", "Room_alias_2");
         assertEquals("Room_alias_2", alias.getAlias());
         assertEquals("abcdef0123456789:swarmcom.org", alias.getRoomId());
         assertEquals("swarmcom.org", alias.getServer());
         RoomAlias.RoomAliases aliases = roomAliasService.findByRoomId("abcdef0123456789:swarmcom.org");
-        assertEquals("[#Room_alias:swarmcom.org, #Room_alias_2:swarmcom.org]", aliases.getAliases());
+        assertArrayEquals(List.of("#Room_alias:swarmcom.org", "#Room_alias_2:swarmcom.org").toArray(), aliases.getAliases().toArray());
     }
 
     @Test
-    public void deleteAlias() {
+    void deleteAlias() {
 
     }
 }

@@ -16,22 +16,21 @@
 */
 package org.swarmcom.jsynapse.service.message;
 
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.swarmcom.jsynapse.TestBase;
-import org.swarmcom.jsynapse.domain.Room;
 import org.swarmcom.jsynapse.domain.Message;
+import org.swarmcom.jsynapse.domain.Room;
 import org.swarmcom.jsynapse.service.room.RoomService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.swarmcom.jsynapse.domain.Message.MessageSummary;
+import static org.swarmcom.jsynapse.domain.Message.MessageSummary.BODY;
+import static org.swarmcom.jsynapse.domain.Message.MessageSummary.MSG_TYPE;
 import static org.swarmcom.jsynapse.domain.Message.Messages;
-import static org.swarmcom.jsynapse.domain.Message.MessageSummary.*;
 
-public class MessageServiceTest extends TestBase {
+class MessageServiceTest extends TestBase {
     @Autowired
     MessageService messageService;
 
@@ -39,7 +38,7 @@ public class MessageServiceTest extends TestBase {
     RoomService roomService;
 
     @Test
-    public void getRoomMessages() {
+    void getRoomMessages() {
         //create room
         Room room = new Room();
         room.setName("My First Test Room");

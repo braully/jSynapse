@@ -1,10 +1,10 @@
 {
   "flows": [
     {
-      "type": "m.login.recaptcha"
+      "type": "m.login.password"
     },
     {
-      "type": "m.login.password"
+      "type": "m.login.recaptcha"
     }
   ]
 }

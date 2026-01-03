@@ -16,14 +16,13 @@
 */
 package org.swarmcom.jsynapse.controller;
 
+import jakarta.validation.ValidationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.swarmcom.jsynapse.service.exception.EntityAlreadyExistsException;
 import org.swarmcom.jsynapse.service.exception.EntityNotFoundException;
 import org.swarmcom.jsynapse.service.exception.InvalidRequestException;
 import org.swarmcom.jsynapse.service.exception.TokenNotFoundException;
-
-import javax.validation.ValidationException;
 
 import static org.springframework.http.HttpStatus.*;
 

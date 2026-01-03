@@ -17,15 +17,13 @@
 package org.swarmcom.jsynapse.controller.client.api.v1;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import org.swarmcom.jsynapse.controller.JsynapseApi;
 import org.swarmcom.jsynapse.domain.User;
 import org.swarmcom.jsynapse.service.user.UserService;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
 import static java.lang.String.format;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -39,7 +37,6 @@ public class UserRestApi extends JsynapseApi {
     private static final String ACCESS_TOKEN = "access_token";
     private final UserService userService;
 
-    @Inject
     public UserRestApi(final UserService userService) {
         this.userService = userService;
     }

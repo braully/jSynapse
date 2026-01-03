@@ -17,6 +17,8 @@
 package org.swarmcom.jsynapse.controller.client.api.v1;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,9 +29,6 @@ import org.swarmcom.jsynapse.controller.JsynapseApi;
 import org.swarmcom.jsynapse.domain.Presence;
 import org.swarmcom.jsynapse.domain.Presence.PresenceSummary;
 import org.swarmcom.jsynapse.service.presence.PresenceService;
-
-import javax.inject.Inject;
-import javax.validation.Valid;
 
 import static java.lang.String.format;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;

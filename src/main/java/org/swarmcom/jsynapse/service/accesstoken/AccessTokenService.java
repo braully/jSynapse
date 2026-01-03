@@ -16,10 +16,12 @@
 */
 package org.swarmcom.jsynapse.service.accesstoken;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.swarmcom.jsynapse.domain.AccessToken;
 
 public interface AccessTokenService {
-    public boolean isTokenAssigned(String userId, String token);
+    boolean isTokenAssigned(@NotNull String userId, @NotNull String token);
 
-    public AccessToken createOrUpdateToken(AccessToken accessToken);
+    AccessToken createOrUpdateToken(@NotNull @Valid AccessToken accessToken);
 }

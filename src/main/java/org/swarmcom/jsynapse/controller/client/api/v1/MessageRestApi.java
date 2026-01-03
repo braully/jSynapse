@@ -16,19 +16,22 @@
 */
 package org.swarmcom.jsynapse.controller.client.api.v1;
 
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.swarmcom.jsynapse.controller.JsynapseApi;
 import org.swarmcom.jsynapse.domain.Message;
 import org.swarmcom.jsynapse.service.message.MessageService;
 
-import javax.inject.Inject;
-import javax.validation.Valid;
-
-import static org.springframework.web.bind.annotation.RequestMethod.*;
-import static org.swarmcom.jsynapse.domain.Message.Messages;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.swarmcom.jsynapse.controller.JsynapseApi.CLIENT_V1_API;
+import static org.swarmcom.jsynapse.domain.Message.Messages;
 
 @RestController
 @RequestMapping(value = CLIENT_V1_API)
